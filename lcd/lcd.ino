@@ -21,6 +21,8 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 // Inicializamos el objecto del modulo RTC
 RTC_DS3231 rtc;
+DateTime date;
+String dateString;
 
 byte customChar[] = {
   B01110,
@@ -48,18 +50,19 @@ void setup() {
 }
 
 void loop() {
-  DateTime date = rtc.now();                      // Obtenemos la fecha y hora del modulo
-  Serial.println(date.toString("DDD, DD MMM YYYY hh:mm:ss"));
+  date = rtc.now();                                   // Obtenemos la fecha y hora del modulo
+  dateString = date.timestamp(DateTime::TIMESTAMP_FULL);
+  Serial.println(dateString);
 
-  temperature = dht.readTemperature();            // Obtenemos la temperatura
-  humidity = dht.readHumidity();                  // Obtenemos la humedad
+  temperature = dht.readTemperature();                // Obtenemos la temperatura
+  humidity = dht.readHumidity();                      // Obtenemos la humedad
   
-  lcd.setCursor(0, 0);                            // Coloca el cursor en la primera fila
+  lcd.setCursor(0, 0);                                // Coloca el cursor en la primera fila
   lcd.print("Temp.: ");
   lcd.print(temperature);
   lcd.write(byte(0));
   lcd.print("C");
-  lcd.setCursor(0, 1);                            // Coloca el cursor en la segunda fila
+  lcd.setCursor(0, 1);                                // Coloca el cursor en la segunda fila
   lcd.print("Humedad: ");
   lcd.print(humidity);
   lcd.print("%");
